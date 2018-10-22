@@ -1,0 +1,6 @@
+ofxColorPalette
+ofxDatGui
+ofxVectorGraphics
+ofxATK
+ofxEasing
+
