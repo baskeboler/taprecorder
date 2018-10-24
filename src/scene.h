@@ -5,8 +5,12 @@
 #include "ofxVectorGraphics.h"
 #include <memory>
 #include "state.h"
-//class State;
 #include <glm.hpp>
+#include <vector>
+
+class SceneElement;
+class Scene;
+typedef std::shared_ptr<Scene> ScenePtr;
 
 class Scene: public std::enable_shared_from_this<Scene>
 {
@@ -15,11 +19,8 @@ public:
 
     void draw();
 
-    void drawButton();
 
     void update();
-
-    bool buttonHitTest(int x, int y);
 
     void onMousePressed(int x, int y);
 
@@ -42,11 +43,10 @@ public:
     void play();
     void stopPlaying();
 private:
-    ofColor bg1, bg2, buttonColor;
-    double buttonRadius = 100.0;
+    ofColor bg1, bg2;
     ofxVectorGraphics gx;
-    ofTrueTypeFont font, titleFont;
-    std::shared_ptr<State> state;
+//    ofTrueTypeFont font, titleFont;
+//    std::shared_ptr<State> state;
     vector<double> taps;
     uint64_t time = 0;
     bool recording = false;
@@ -55,13 +55,10 @@ private:
     bool playing = false;
     uint64_t play_start = 0;
     uint64_t play_end = 0;
-
-    friend class State;
-    friend class InitState;
-    friend class PushedState;
-
+    vector<std::shared_ptr<SceneElement>> elements;
 };
 
 
+#include <sceneelement.h>
 
 #endif // SCENE_H

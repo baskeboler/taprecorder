@@ -1,33 +1,54 @@
 #include "scene.h"
+#include "state.h"
+
+#include "tapbutton.h"
+#include "ofxColorPalette.h"
 #include <sstream>
+#include "fontmanager.h"
+#include "taprecorderevent.h"
+
 Scene::Scene():
     bg1{ofColor::darkMagenta},
-    bg2{ofColor::black},
-    buttonColor{ofColor::red},
-    state{nullptr},
-    enable_shared_from_this{},
-    font{}
+    bg2{ofColor::black}
+//    state{nullptr},
+//    enable_shared_from_this{},
+//    font{},
+//    elements{}
 {
     ofSetCircleResolution(50);
 //    ofTrueTypeFont::setGlobalDpi(72);
-    font.load("verdana.ttf", 14, true, true);
+   // font.load("verdana.ttf", 14, true, true);
 
-    titleFont.load("verdana.ttf", 48, true, true);
+
+   // titleFont.load("verdana.ttf", 48, true, true);
     startTimer();
 }
 
 void Scene::init_state() {
     auto self = this->shared_from_this();
-    state = State::defaultState(self);
+//    state = State::defaultState(self);
 
+
+    ofxColorPalette::RandomPalette p;
+    auto btn = std::make_shared<TapButton>(this->shared_from_this());
+    btn->position = 0.5 * ofGetWindowSize();
+    btn->buttonRadius = 500;
+    btn->buttonColor = *p.nextColor();
+    btn->activeColor = *p.nextColor();
+    btn->borderColor = *p.nextColor();
+    btn->initState();
+    elements.push_back(btn);
 }
 void Scene::startTimer() {
+    TapRecorderEvent::getInstance()->startRecording();
     recording = true;
     time = ofGetCurrentTime().getAsMilliseconds();
 }
 
 void Scene::resetTaps() {
     taps.clear();
+
+    TapRecorderEvent::getInstance()->resetRecording();
     startTimer();
 }
 
@@ -47,62 +68,43 @@ void Scene::drawTimeLabel() {
     } else {
         label = "Not recording";
     }
-    auto b = font.getStringBoundingBox(label, 0, 0);
-    font.drawString(label, 16, 16 + b.height);
+    auto f = FontManager::get_instance()->getFont("verdana", 14);
+    auto b = f->getStringBoundingBox(label, 0, 0);
+    f->drawString(label, 16, 16 + b.height);
 }
 
 void Scene::draw() {
     ofBackgroundGradient(bg1, bg2);
 
-    drawButton();
+//    drawButton();
+    for (auto &e: elements) {
+       e->draw();
+    }
+
     drawTimeLabel();
     plotTaps();
 }
 
-void Scene::drawButton() {
-    std::string buttonLabel = "button label";
-    std::string title = "tap recorder";
-    auto w_size = ofGetWindowSize();
-    auto box = font.getStringBoundingBox("button label", 0,0);
-    auto titleBox = titleFont.getStringBoundingBox(title, 0, 0);
-    ofSetColor(ofColor::white);
-    titleFont.drawString(title, w_size.x * 0.5 - titleBox.width * 0.5, 60.0);
-
-    ofPushMatrix();
-    ofTranslate(w_size * 0.5);
-
-    gx.setColor(ofColor::white.getHex());
-    gx.circle(0, 0, buttonRadius * 1.1);
-    gx.setColor(buttonColor.getHex());
-    gx.circle(0, 0, buttonRadius);
-    ofSetColor(ofColor::white);
-    font.drawString(buttonLabel, -box.width * 0.5, -box.height * 0.5);
-//    ofDrawBitmapString("Button label", 100, 100);
-    ofPopMatrix();
-}
 
 void Scene::update() {
-    state = state->update(State::Event::UPDATE, this->shared_from_this());
+//    state = state->update(State::Event::UPDATE, this->shared_from_this());
+    for (auto &e : elements) {
+        e->update();
+    }
 }
 
-bool Scene::buttonHitTest(int x, int y) {
-    auto center = ofGetWindowSize() * 0.5;
-    auto click_point = glm::vec2{x, y};
 
-    auto dist = glm::length(center - click_point);
-    return dist < buttonRadius;
-}
 
 void Scene::onMousePressed(int x, int y) {
 
-    if (buttonHitTest(x, y)) {
-        state = state->update(State::Event::PUSH, this->shared_from_this());
-    }
+//    if (buttonHitTest(x, y)) {
+//        state = state->update(State::Event::PUSH, this->shared_from_this());
+//    }
 }
 
 void Scene::onMouseReleased(int x, int y) {
 
-    state = state->update(State::Event::RELEASE, this->shared_from_this());
+//    state = state->update(State::Event::RELEASE, this->shared_from_this());
 }
 
 void Scene::onKeyTapped() {
@@ -111,17 +113,23 @@ void Scene::onKeyTapped() {
     }
 }
 void Scene::stopRecording() {
+    TapRecorderEvent::getInstance()->pauseRecording();
+
     end = ofGetCurrentTime().getAsMilliseconds();
     recording = false;
 
 }
 
 void Scene::play() {
+
+    TapRecorderEvent::getInstance()->startPlaying();
     playing= true;
     play_start = ofGetCurrentTime().getAsMilliseconds();
 }
 
 void Scene::stopPlaying(){
+
+    TapRecorderEvent::getInstance()->pausePlaying();
     playing=false;
     play_end = ofGetCurrentTime().getAsMilliseconds();
 }

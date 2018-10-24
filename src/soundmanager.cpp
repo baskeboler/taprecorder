@@ -52,5 +52,7 @@ void SoundManager::audioOut(ofSoundBuffer &buf) {
 }
 
 SoundManager::~SoundManager() {
+    ofLog() << "Destroying sound manager";
+    ofSoundStreamStop();
     ofSoundStreamClose();
 }

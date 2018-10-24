@@ -12,15 +12,30 @@ Project{
         name: { return FileInfo.baseName(sourceDirectory) }
 
         files: [
+            "src/buttonstate.cpp",
+            "src/buttonstate.h",
+            "src/fontmanager.cpp",
+            "src/fontmanager.h",
+            "src/includes.h",
             "src/scene.cpp",
             "src/scene.h",
+            "src/sceneelement.cpp",
+            "src/sceneelement.h",
             "src/soundmanager.cpp",
             "src/soundmanager.h",
             "src/state.cpp",
             "src/state.h",
-            'src/main.cpp',
-            'src/ofApp.cpp',
-            'src/ofApp.h',
+            "src/tapbutton.cpp",
+            "src/tapbutton.h",
+            "src/tapdisplay.cpp",
+            "src/tapdisplay.h",
+            "src/tapdisplaystate.cpp",
+            "src/tapdisplaystate.h",
+            "src/taprecorderevent.cpp",
+            "src/taprecorderevent.h",
+            "src/main.cpp",
+            "src/ofApp.cpp",
+            "src/ofApp.h",
         ]
 
         of.addons: [

@@ -31,4 +31,8 @@ private:
         std::shared_ptr<ofxDatGui> gui;
 
         std::shared_ptr<SoundManager> soundManager;
+
+        // ofBaseApp interface
+public:
+        void exit();
 };
