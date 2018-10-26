@@ -32,7 +32,7 @@ std::shared_ptr<State<TapButton>> InitState::update() {
     auto targetColor = subject->primaryColor;
 
     float r, g,b;
-    subject->buttonRadius = ofxeasing::map_clamp(now, start_time, start_time + animation_length, start_radius, 100, ofxeasing::bounce::easeIn);
+    subject->buttonRadius = ofxeasing::map_clamp(now, start_time, start_time + animation_length, start_radius, 100, ofxeasing::quad::easeInOut);
     r = ofxeasing::map_clamp(now, start_time, start_time + animation_length, startColor.r, targetColor.r, ofxeasing::linear::easeIn);
     g = ofxeasing::map_clamp(now, start_time, start_time + animation_length, startColor.g, targetColor.g, ofxeasing::linear::easeIn);
     b = ofxeasing::map_clamp(now, start_time, start_time + animation_length, startColor.b, targetColor.b, ofxeasing::linear::easeIn);
@@ -59,7 +59,7 @@ std::shared_ptr<State<TapButton>> PushedState::update() {
     auto targetColor = subject->activeColor;
 
     float  r, g,b;
-    subject->buttonRadius = ofxeasing::map_clamp(now, start_time, start_time + animation_length, start_radius, 120, ofxeasing::bounce::easeIn);
+    subject->buttonRadius = ofxeasing::map_clamp(now, start_time, start_time + animation_length, start_radius, start_radius * 1.1, ofxeasing::quad::easeInOut);
     r = ofxeasing::map_clamp(now, start_time, start_time + animation_length, startColor.r, targetColor.r, ofxeasing::linear::easeIn);
     g = ofxeasing::map_clamp(now, start_time, start_time + animation_length, startColor.g, targetColor.g, ofxeasing::linear::easeIn);
     b = ofxeasing::map_clamp(now, start_time, start_time + animation_length, startColor.b, targetColor.b, ofxeasing::linear::easeIn);

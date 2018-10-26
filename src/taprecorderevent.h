@@ -31,6 +31,10 @@ public:
     void resetPlaying() {
         ofNotifyEvent(RESET_PLAYER, *this);
     }
+
+    void togglePause() {
+        ofNotifyEvent(TOGGLE_PAUSE, *this);
+    }
     static ofEvent<TapRecorderEvent> START_RECORDING;
     static ofEvent<TapRecorderEvent> PAUSE_RECORDING;
     static ofEvent<TapRecorderEvent> RESET_RECORDING;
@@ -38,6 +42,8 @@ public:
     static ofEvent<TapRecorderEvent> START_PLAYER;
     static ofEvent<TapRecorderEvent> PAUSE_PLAYER;
     static ofEvent<TapRecorderEvent> RESET_PLAYER;
+
+    static ofEvent<TapRecorderEvent> TOGGLE_PAUSE;
 private:
     static std::shared_ptr<TapRecorderEvent> instance;
     TapRecorderEvent() = default;

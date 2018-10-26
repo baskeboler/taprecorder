@@ -33,6 +33,7 @@ private:
 
     ScenePtr scene;
 
+    std::shared_ptr<ofSoundPlayer> tapPlayer;
     bool playing = false;
     uint64_t play_start=0;
 };

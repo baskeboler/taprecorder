@@ -12,6 +12,7 @@ ofEvent<TapRecorderEvent> TapRecorderEvent::START_PLAYER;
 ofEvent<TapRecorderEvent> TapRecorderEvent::PAUSE_PLAYER;
 ofEvent<TapRecorderEvent> TapRecorderEvent::RESET_PLAYER;
 
+ofEvent<TapRecorderEvent> TapRecorderEvent::TOGGLE_PAUSE;
 std::shared_ptr<TapRecorderEvent> TapRecorderEvent::getInstance()
 {
     if (!instance) {

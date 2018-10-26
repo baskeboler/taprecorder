@@ -22,6 +22,10 @@ void ofApp::setupGui() {
         ofExit();
     });
 
+    gui->addBreak();
+    gui->addButton("play");
+    gui->addButton("record");
+
     gui->addFooter();
 }
 
@@ -52,7 +56,9 @@ void ofApp::keyPressed(int key){
         scene->stopPlaying();
     } else if (key == 'p') {
         scene->play();
-    }else {
+    } else if (key == 'l')
+        scene->togglePause();
+    } else {
         scene->onKeyTapped();
     }
 }

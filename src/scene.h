@@ -42,6 +42,9 @@ public:
 
     void play();
     void stopPlaying();
+    void togglePause();
+    vector<double> getTaps() const;
+
 private:
     ofColor bg1, bg2;
     ofxVectorGraphics gx;

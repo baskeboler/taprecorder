@@ -6,7 +6,9 @@
 #include <sstream>
 #include "fontmanager.h"
 #include "taprecorderevent.h"
-
+#include "animatedtext.h"
+#include "tweenmanager.h"
+#include "tapdisplay.h"
 Scene::Scene():
     bg1{ofColor::darkMagenta},
     bg2{ofColor::black}
@@ -38,6 +40,40 @@ void Scene::init_state() {
     btn->borderColor = *p.nextColor();
     btn->initState();
     elements.push_back(btn);
+
+    auto t = std::make_shared<AnimatedText>(shared_from_this(), "TAP RECORDER");
+    auto textX = ofGetWindowWidth()/2 - 0.5*t->getBBox().getWidth();
+    t->setPos( glm::vec2{textX, 100.0});
+    t->setColor(ofColor::white);
+    elements.push_back(t);
+
+    auto builder = TweenManager::getInstance()->newTween();
+
+            builder->withAnimationLength(3000)
+            ->withCallback([](){})
+            ->withGetter([t](){
+                return t->getPos().y;
+            })
+            ->withSetter([t](float y) {
+                auto p = t->getPos();
+                p.y = y;
+                t->setPos(p);
+            })
+            ->withToValue(400)
+            ->withEasing(ofxeasing::elastic::easeOut)
+            ->withYoyo(true)
+            ->build();
+
+     auto displ = std::make_shared<TapDisplay>(shared_from_this());
+     displ->init();
+     auto w_size = ofGetWindowSize();
+     auto plot_width = 0.9 * w_size.x;
+     auto h_gap = w_size.x * 0.05;
+     auto y = w_size.y - 100;
+
+     displ->setPosition({h_gap, y});
+     displ->setSize({plot_width, 80});
+     elements.push_back(displ);
 }
 void Scene::startTimer() {
     TapRecorderEvent::getInstance()->startRecording();
@@ -82,7 +118,7 @@ void Scene::draw() {
     }
 
     drawTimeLabel();
-    plotTaps();
+//    plotTaps();
 }
 
 
@@ -132,6 +168,15 @@ void Scene::stopPlaying(){
     TapRecorderEvent::getInstance()->pausePlaying();
     playing=false;
     play_end = ofGetCurrentTime().getAsMilliseconds();
+}
+
+void Scene::togglePause() {
+    TapRecorderEvent::getInstance()->togglePause();
+}
+
+vector<double> Scene::getTaps() const
+{
+    return taps;
 }
 
 
