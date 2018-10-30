@@ -12,11 +12,15 @@ Project{
         name: { return FileInfo.baseName(sourceDirectory) }
 
         files: [
+            "src/animatedtext.cpp",
+            "src/animatedtext.h",
             "src/buttonstate.cpp",
             "src/buttonstate.h",
             "src/fontmanager.cpp",
             "src/fontmanager.h",
             "src/includes.h",
+            "src/label.cpp",
+            "src/label.h",
             "src/scene.cpp",
             "src/scene.h",
             "src/sceneelement.cpp",
@@ -36,6 +40,10 @@ Project{
             "src/main.cpp",
             "src/ofApp.cpp",
             "src/ofApp.h",
+            "src/tween.cpp",
+            "src/tween.h",
+            "src/tweenmanager.cpp",
+            "src/tweenmanager.h",
         ]
 
         of.addons: [

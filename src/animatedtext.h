@@ -11,11 +11,8 @@ public:
     virtual ~AnimatedText()=default;
     // SceneElement interface
 public:
-    void update();
-    void draw();
-
-    glm::vec2 getPos() const;
-    void setPos(const glm::vec2 &value);
+    virtual void update();
+    virtual void draw();
 
     ofColor getColor() const;
     void setColor(const ofColor &value);
@@ -23,11 +20,10 @@ public:
     ofRectangle getBBox() const {
         return font->getStringBoundingBox(text,0,0);
     }
+
 private:
     std::shared_ptr<ofTrueTypeFont> font;
     std::string text;
-//    std::vector<ofPath> paths;
-    glm::vec2 pos;
     ofColor color;
     uint64_t startTime, elapsedTime;
 };

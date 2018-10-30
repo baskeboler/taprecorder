@@ -3,6 +3,7 @@
 
 #include "sceneelement.h"
 #include "state.h"
+#include "label.h"
 
 class TapButton: public SceneElement, public std::enable_shared_from_this<TapButton>
 {
@@ -19,10 +20,8 @@ public:
     bool hitTest(const glm::vec2 &pos) const;
 
     ofColor buttonColor, primaryColor, activeColor, borderColor;
-    float buttonRadius;
-    glm::vec2 size;
-    glm::vec2 position;
-    std::string label;
+    float buttonRadius, buttonInitRadius;
+    std::shared_ptr<Label> label;
 //    ofTrueTypeFont font;
     std::shared_ptr<State<TapButton>> state;
  };

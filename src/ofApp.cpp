@@ -56,7 +56,7 @@ void ofApp::keyPressed(int key){
         scene->stopPlaying();
     } else if (key == 'p') {
         scene->play();
-    } else if (key == 'l')
+    } else if (key == 'l'){
         scene->togglePause();
     } else {
         scene->onKeyTapped();

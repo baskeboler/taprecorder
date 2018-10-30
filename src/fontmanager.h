@@ -8,7 +8,7 @@ class FontManager
 public:
     static std::shared_ptr<FontManager> get_instance();
 
-    std::shared_ptr<ofTrueTypeFont> getFont(std::string name, int size);
+    std::shared_ptr<ofTrueTypeFont> getFont(const std::string& name, int size);
 
 private:
     std::map<std::string, std::shared_ptr<ofTrueTypeFont>> fonts;

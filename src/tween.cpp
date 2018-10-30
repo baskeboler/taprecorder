@@ -65,3 +65,20 @@ uint64_t Tween::nextTweenId()
 {
     return tween_id++;
 }
+
+void ColorTween::update() {
+    auto now = ofGetCurrentTime().getAsMilliseconds();
+    auto newValR = ofxeasing::map_clamp(now, start_time, start_time + animation_length_millis, from_value.r, to_value.r, easing);
+    auto newValG = ofxeasing::map_clamp(now, start_time, start_time + animation_length_millis, from_value.g, to_value.g, easing);
+    auto newValB = ofxeasing::map_clamp(now, start_time, start_time + animation_length_millis, from_value.b, to_value.b, easing);
+    ofColor newVal(newValR, newValG, newValB);
+    setter(newVal);
+    if (newVal == to_value) {
+        if (yoyo) {
+            std::swap(to_value, from_value);
+            start_time = ofGetCurrentTime().getAsMilliseconds();
+        } else {
+            if (callback) callback();
+        }
+    }
+}

@@ -12,17 +12,9 @@
 Scene::Scene():
     bg1{ofColor::darkMagenta},
     bg2{ofColor::black}
-//    state{nullptr},
-//    enable_shared_from_this{},
-//    font{},
-//    elements{}
 {
-    ofSetCircleResolution(50);
+//    ofSetCircleResolution(50);
 //    ofTrueTypeFont::setGlobalDpi(72);
-   // font.load("verdana.ttf", 14, true, true);
-
-
-   // titleFont.load("verdana.ttf", 48, true, true);
     startTimer();
 }
 
@@ -33,8 +25,8 @@ void Scene::init_state() {
 
     ofxColorPalette::RandomPalette p;
     auto btn = std::make_shared<TapButton>(this->shared_from_this());
-    btn->position = 0.5 * ofGetWindowSize();
-    btn->buttonRadius = 500;
+    btn->setPos( 0.5 * ofGetWindowSize());
+    btn->buttonRadius = 100;
     btn->buttonColor = *p.nextColor();
     btn->activeColor = *p.nextColor();
     btn->borderColor = *p.nextColor();
@@ -42,14 +34,13 @@ void Scene::init_state() {
     elements.push_back(btn);
 
     auto t = std::make_shared<AnimatedText>(shared_from_this(), "TAP RECORDER");
-    auto textX = ofGetWindowWidth()/2 - 0.5*t->getBBox().getWidth();
+    auto textX = 0.5 * ofGetWindowWidth() - 0.5*t->getBBox().getWidth();
     t->setPos( glm::vec2{textX, 100.0});
     t->setColor(ofColor::white);
     elements.push_back(t);
 
-    auto builder = TweenManager::getInstance()->newTween();
-
-            builder->withAnimationLength(3000)
+    TweenManager::getInstance()->newTween()
+            ->withAnimationLength(1000)
             ->withCallback([](){})
             ->withGetter([t](){
                 return t->getPos().y;
@@ -63,7 +54,59 @@ void Scene::init_state() {
             ->withEasing(ofxeasing::elastic::easeOut)
             ->withYoyo(true)
             ->build();
+    TweenManager::getInstance()->newTween()
+            ->withAnimationLength(2000)
+            ->withCallback([](){})
+            ->withGetter([t](){
+                return t->getPos().x;
+            })
+            ->withSetter([t](float y) {
+                auto p = t->getPos();
+                p.x = y;
+                t->setPos(p);
+            })
+            ->withToValue(700)
+            ->withEasing(ofxeasing::elastic::easeOut)
+            ->withYoyo(true)
+            ->build();
+    TweenManager::getInstance()->newTween()
+            ->withAnimationLength(2000)
+            ->withCallback([](){})
+            ->withGetter([t](){
+                return t->getScale();
+            })
+            ->withSetter([t](float y) {
+                t->setScale(y);
+            })
+            ->withToValue(2.5)
+            ->withEasing(ofxeasing::circ::easeOut)
+            ->withYoyo(true)
+            ->build();
 
+    TweenManager::getInstance()->newColorTween()
+            ->withAnimationLength(3000)
+            ->withCallback([](){})
+            ->withGetter([&]() {
+                return bg1;
+            })
+            ->withSetter([&](ofColor c) {
+                bg1 = c;
+            })
+            ->withToValue(bg2)
+            ->withYoyo(true)
+            ->build();
+    TweenManager::getInstance()->newColorTween()
+            ->withAnimationLength(3000)
+            ->withCallback([](){})
+            ->withGetter([&]() {
+                return bg2;
+            })
+            ->withSetter([&](ofColor c) {
+                bg2 = c;
+            })
+            ->withToValue(bg1)
+            ->withYoyo(true)
+            ->build();
      auto displ = std::make_shared<TapDisplay>(shared_from_this());
      displ->init();
      auto w_size = ofGetWindowSize();

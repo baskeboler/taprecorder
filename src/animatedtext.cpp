@@ -24,30 +24,26 @@ void AnimatedText::update()
 void AnimatedText::draw()
 {
 //    auto f = FontManager::get_instance()->getFont("verdana", 32);
-
+    ofPushMatrix();
+    ofTranslate(pos);
+    ofScale(scale);
     int i = 0;
     ofSetColor(color);
-    for (auto c: text) {
-        auto val = sin(0.001*elapsedTime + i++);
-        auto delta = ofxeasing::map_clamp(val, -1,1, -20, 20, ofxeasing::linear::easeInOut);
-        ofPushMatrix();
-        ofTranslate(pos + glm::vec2{0, delta});
-//        p.setColor(color);
-//        p.draw();
-        font->drawString(std::string() + (char)c, font->getSize()*i, 0);
-        ofPopMatrix();
-    }
+    auto bb = font->getStringBoundingBox(text,0,0);
+    font->drawString(text, -bb.width/2 , -bb.height/2);
+//    for (auto c: text) {
+//        auto val = sin(0.001*elapsedTime + i++);
+//        auto delta = ofxeasing::map_clamp(val, -1,1, -20, 20, ofxeasing::linear::easeInOut);
+//        ofPushMatrix();
+//        ofTranslate(pos + glm::vec2{0, delta});
+////        p.setColor(color);
+////        p.draw();
+//        font->drawString(std::string() + (char)c, font->getSize()*i, 0);
+//        ofPopMatrix();
+//    }
+    ofPopMatrix();
 }
 
-glm::vec2 AnimatedText::getPos() const
-{
-    return pos;
-}
-
-void AnimatedText::setPos(const glm::vec2 &value)
-{
-    pos = value;
-}
 
 ofColor AnimatedText::getColor() const
 {
@@ -58,3 +54,4 @@ void AnimatedText::setColor(const ofColor &value)
 {
     color = value;
 }
+

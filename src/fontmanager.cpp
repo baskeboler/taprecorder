@@ -10,7 +10,7 @@ std::shared_ptr<FontManager> FontManager::get_instance()
     return instance;
 }
 
-std::shared_ptr<ofTrueTypeFont> FontManager::getFont(string name, int size) {
+std::shared_ptr<ofTrueTypeFont> FontManager::getFont(const string &name, int size) {
     std::stringstream ss;
     ss << name << " " << size;
     if (!fonts[ss.str()]) {
